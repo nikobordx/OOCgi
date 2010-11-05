@@ -9,7 +9,7 @@ main : Func -> Int
 	html : String = "<html><body>"
 	if(test getArray get("name") != null) // always check that the GET or POST parameter you want to use is not null, else your program may crash
 	{
-		html += "<p>Hello, " + test getArray get("name") " !!!</p>"
+		html += "<p>Hello, " + test getArray get("name") + " !!!</p>"
 	}
 	else if(test requestHeaders get("REMOTE_ADDR") != null)
 	{
