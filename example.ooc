@@ -20,7 +20,8 @@ main : Func -> Int
 		// oO your server does not gieve REMOTE_ADDR to the cgi application, thus is not CGI/1.1 compliant ;p
 		html += "<p>...</p>"
 	}
-	html += "</body></html>
+	html += "</body></html>"
+	test setBody(html) // set response body to the html code we wrote
 	test forgeResponse() // forge response
 	test response print() // print the response (this is equivalent to sending it back to server)
 	
