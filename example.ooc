@@ -3,7 +3,7 @@ import oocgi
 
 main : Func -> Int
 {
-	test := CGI new() // initialise our cgi object (basic http headers and env variables are loaded by constructor
+	test := CGI new() // initialize our cgi object (basic http headers and env variables are loaded by constructor
 	test setHeader("Status","200") // set status code to 200 OK
 	test setHeader("Content-type","text/html") // set the content-type to html. If no content-length is specified,OOCgi generates it on its own
 	html : String = "<html><body>"
@@ -17,7 +17,7 @@ main : Func -> Int
 	}
 	else
 	{
-		// oO your server does not gieve REMOTE_ADDR to the cgi application, thus is not CGI/1.1 compliant ;p
+		// oO your server does not give REMOTE_ADDR to the cgi application, thus is not CGI/1.1 compliant ;p
 		html += "<p>...</p>"
 	}
 	html += "</body></html>"

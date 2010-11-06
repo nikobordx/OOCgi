@@ -2,14 +2,12 @@ use oocgi
 import os/Env
 import structs/MultiMap
 
-// TODO: parse get and post request strings, populate some arrays with them
-
 CGI: class
 {
-    requestHeaders := MultiMap<String,String> new(50)
-    responseHeaders := MultiMap<String,String> new(50)
-    getArray := MultiMap<String,String> new(50)
-    postArray := MultiMap<String,String> new(50)
+    requestHeaders := MultiMap<String,String> new()
+    responseHeaders := MultiMap<String,String> new()
+    getArray := MultiMap<String,String> new()
+    postArray := MultiMap<String,String> new()
     response : String
     body : String
     init : func
@@ -39,15 +37,14 @@ CGI: class
             temp = gc_malloc(n+1)
             memset(temp,0,n+1)
             fread(temp,1,n,stdin)
-            formData := urldecode(temp as String)
             
-            postArray = parseQuery(formData)
+            postArray = parseQuery(urldecode(temp as String))
         }
     }
     
     parseQuery : func (query: String) -> MultiMap<String,String>
     {
-        ret := MultiMap<String,String> new(50)
+        ret := MultiMap<String,String> new()
         if(query != null)
         {
             secondPart := false
@@ -94,7 +91,7 @@ CGI: class
     {
         ret : String
         n := string size
-        state := 0 // 0->SEARCH , 1->CONVERTING
+        state := 0
         for(i in 0 .. n)
         {  
             if(state == 0)

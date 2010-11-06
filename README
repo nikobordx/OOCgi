@@ -2,4 +2,4 @@ OOCgi version 0.1
 
 OOCgi is written in native OOC. Its purpose is to enable the use of OOC to write CGI applications.
 OOCgi generates parsed header output, wich should be supported by any http server that supports CGI/1.1
-You can use, modify and redistribute this class however you want. 
+You can use, modify and redistribute this class in whatever way you want. 

@@ -1,6 +1,6 @@
 Name: OOCGI version 0.1
 Version: head
-Origin: not_yet
-Description: N/A
+Origin: git://github.com/shamanas/OOCgi.git
+Description: OOCgi is a CGI class that generates parsed header output written in OOC
 SourcePath: .
 
