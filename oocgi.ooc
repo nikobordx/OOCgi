@@ -62,7 +62,7 @@ CGI: class
                     {
                         tempFirst = (tempFirst == null) ? query[i] as String : tempFirst+(query[i] as String)
                     }
-                    ret[tempFirst] = tempSecond
+                    ret[tempFirst] = urldecode(tempSecond)
                     secondPart = false
                     tempFirst = ""
                     tempSecond = ""
