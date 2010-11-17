@@ -38,7 +38,7 @@ CGI: class
             memset(temp,0,n+1)
             fread(temp,1,n,stdin)
             
-            postArray = parseQuery(urldecode(temp as String))
+            postArray = parseQuery(temp as String)
         }
     }
     
@@ -62,7 +62,7 @@ CGI: class
                     {
                         tempFirst = (tempFirst == null) ? query[i] as String : tempFirst+(query[i] as String)
                     }
-                    ret[tempFirst] = urldecode(tempSecond)
+                    ret[urldecode(tempFirst)] = urldecode(tempSecond)
                     secondPart = false
                     tempFirst = ""
                     tempSecond = ""
