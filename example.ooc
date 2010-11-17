@@ -5,7 +5,7 @@ main : Func -> Int
 {
 	test := CGI new() // initialize our cgi object (basic http headers and env variables are loaded by constructor
 	test setHeader("Status","200") // set status code to 200 OK
-	test setHeader("Content-type","text/html") // set the content-type to html. If no content-length is specified,OOCgi generates it on its own
+	test setHeader("Content-type","text/html") // set the content-type to html
 	html : String = "<html><body>"
 	if(test getArray get("name") != null) // always check that the GET or POST parameter you want to use is not null, else your program may crash
 	{

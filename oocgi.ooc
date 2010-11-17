@@ -164,10 +164,6 @@ CGI: class
             val := responseHeaders getAll(key)
             response +=  key + ": " + val + "\n"
         }
-        if(responseHeaders["Content-Length"] == null && body != null)
-        {
-            response += "Content-Length: " + ("%d" format(body length as Int + response length as Int)) + "\n"
-        }
         response += "\n\n" + ((body != null) ? body : "")
     }
     
