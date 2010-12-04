@@ -8,7 +8,7 @@ CGI: class
     responseHeaders := MultiMap<String,String> new()
     getArray := MultiMap<String,String> new()
     postArray := MultiMap<String,String> new()
-    cookies := MultMap<String,String> new()
+    cookies := MultiMap<String,String> new()
     
     response : String
     body : String
