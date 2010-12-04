@@ -8,6 +8,8 @@ CGI: class
     responseHeaders := MultiMap<String,String> new()
     getArray := MultiMap<String,String> new()
     postArray := MultiMap<String,String> new()
+    cookies := MultMap<String,String> new()
+    
     response : String
     body : String
     init : func
@@ -23,8 +25,10 @@ CGI: class
         getEnv("QUERY_STRING")
         getEnv("REMOTE_ADDR")
         getEnv("REQUEST_URI")
+        getEnv("COOKIE")
     
-        getArray = parseQuery(requestHeaders["QUERY_STRING"])
+        getArray = parseQuery(requestHeaders["QUERY_STRING"],'&')
+        cookies = parseQuery(requestHeaders["COOKIE"],';')
         
         if(requestHeaders["REQUEST_METHOD"] == "POST")
         {
@@ -38,11 +42,11 @@ CGI: class
             memset(temp,0,n+1)
             fread(temp,1,n,stdin)
             
-            postArray = parseQuery(temp as String)
+            postArray = parseQuery(temp as String,'&')
         }
     }
     
-    parseQuery : func (query: String) -> MultiMap<String,String>
+    parseQuery : func (query: String, separator : Char) -> MultiMap<String,String>
     {
         ret := MultiMap<String,String> new()
         if(query != null)
@@ -52,7 +56,7 @@ CGI: class
             tempSecond : String = ""
             for(i in 0 .. query size)
             {
-                if(query[i] == '&' || i == query size-1)
+                if(query[i] == separator || i == query size-1)
                 {
                     if(secondPart && i == query size-1)
                     {
