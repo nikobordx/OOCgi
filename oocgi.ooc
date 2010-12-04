@@ -10,6 +10,7 @@ CGI: class
     postArray := MultiMap<String,String> new()
     cookies := MultiMap<String,String> new()
     
+    responseCookies := MultiMap<String,String> new()
     response : String
     body : String
     init : func
@@ -25,10 +26,10 @@ CGI: class
         getEnv("QUERY_STRING")
         getEnv("REMOTE_ADDR")
         getEnv("REQUEST_URI")
-        getEnv("COOKIE")
+        getEnv("HTTP_COOKIE")
     
         getArray = parseQuery(requestHeaders["QUERY_STRING"],'&')
-        cookies = parseQuery(requestHeaders["COOKIE"],';')
+        cookies = parseCookies(requestHeaders["HTTP_COOKIE"])
         
         if(requestHeaders["REQUEST_METHOD"] == "POST")
         {
@@ -44,6 +45,22 @@ CGI: class
             
             postArray = parseQuery(temp as String,'&')
         }
+    }
+    
+    parseCookies : func (query : String) -> MultiMap<String,String>
+    {
+        cookies := parseQuery(query,';')
+        for(i in 0 .. cookies size)
+        {
+            if(i != 0)
+            {
+                // remove the withespace in the beginning, due to the fact we can use
+                // only 1 char as a separator and cookies use 2, a semicolon and a whitespace :) 
+                cookies[cookies getKeys() get(i) trimLeft(' ')] = cookies get(cookies getKeys() get(i))
+                cookies remove(cookies getKeys() get(i))
+            }
+        }
+        cookies
     }
     
     parseQuery : func (query: String, separator : Char) -> MultiMap<String,String>
@@ -91,7 +108,7 @@ CGI: class
         ret
     }
     
-    urldecode : func(string: String) -> String
+    urldecode : static func(string: String) -> String
     {
         ret : String
         n := string size
@@ -137,7 +154,7 @@ CGI: class
         ret
     }
     
-    isXDigit : func(c: Char) -> Bool
+    isXDigit : static func(c: Char) -> Bool
     {
         return (c == '0' || c == '1' || c == '2' || c == '3' || c == '4' || c == '5' || c == '6' || c == '7' || c == '8' || c == '9' || c == 'A' || c == 'B' || c == 'C' || c == 'D' || c == 'E' || c == 'F')
     }
@@ -155,6 +172,16 @@ CGI: class
         responseHeaders[header] = contents
     }
     
+    setCookies : func(cookies : MultiMap<String,String>)
+    {
+        responseCookies = cookies
+    }
+    
+    setCookie : func(name,value : String)
+    {
+        responseCookies[name] = value
+    }
+    
     setBody : func(=body)
     {
     }
@@ -167,6 +194,13 @@ CGI: class
             key := responseHeaders getKeys() get(i)
             val := responseHeaders getAll(key)
             response +=  key + ": " + val + "\n"
+        }
+    
+        for(i in 0 .. responseCookies size)
+        {
+            key := responseCookies getKeys() get(i)
+            val := responseCookies getAll(key)
+            response += "Set-Cookie: " + key + "=" + val + "\n"
         }
         response += "\n\n" + ((body != null) ? body : "")
     }
